@@ -1,0 +1,6 @@
+{
+  "name": "Mess Meal",
+  "description": "Hostel and bachelor mess meal management system with automated meal rate calculation, daily meal logs, bazaar expenses, and balance reconciliation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,133 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile linking Google authentication to current active mess.",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "currentMessId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["displayName", "email", "createdAt", "updatedAt"]
+    },
+    "Mess": {
+      "title": "Mess",
+      "description": "A mess group containing members, shared ledger, and active month.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "managerUid": { "type": "string" },
+        "memberUids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "activeMonth": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "managerUid", "memberUids", "activeMonth", "createdAt", "updatedAt"]
+    },
+    "Member": {
+      "title": "Member",
+      "description": "A member inside a mess with role and room assignment.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "room": { "type": "string" },
+        "role": { "type": "string", "enum": ["MANAGER", "MEMBER"] },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "role", "isActive", "createdAt"]
+    },
+    "DailyMealRecord": {
+      "title": "DailyMealRecord",
+      "description": "Daily meal log matrix mapping member meals and total meals.",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string" },
+        "memberMeals": { "type": "object" },
+        "totalDayMeals": { "type": "number" },
+        "updatedBy": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["date", "totalDayMeals", "updatedBy", "updatedAt"]
+    },
+    "BazaarExpense": {
+      "title": "BazaarExpense",
+      "description": "Grocery bazaar purchase entry recorded for the mess.",
+      "type": "object",
+      "properties": {
+        "buyerMemberId": { "type": "string" },
+        "buyerName": { "type": "string" },
+        "amount": { "type": "number" },
+        "itemsDescription": { "type": "string" },
+        "category": { "type": "string" },
+        "date": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["buyerMemberId", "buyerName", "amount", "itemsDescription", "category", "date", "createdAt"]
+    },
+    "Deposit": {
+      "title": "Deposit",
+      "description": "Cash or digital deposit contributed by a member into the mess fund.",
+      "type": "object",
+      "properties": {
+        "memberId": { "type": "string" },
+        "memberName": { "type": "string" },
+        "amount": { "type": "number" },
+        "date": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["memberId", "memberName", "amount", "date", "paymentMethod", "createdAt"]
+    },
+    "UtilityBill": {
+      "title": "UtilityBill",
+      "description": "Fixed shared utility or service bill split equally among mess members.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "amount": { "type": "number" },
+        "month": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "amount", "month", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile linking Google authentication to active mess."
+    },
+    "/messes/{messId}": {
+      "schema": "Mess",
+      "description": "Mess group containing shared configuration and member list."
+    },
+    "/messes/{messId}/members/{memberId}": {
+      "schema": "Member",
+      "description": "Members participating in the mess."
+    },
+    "/messes/{messId}/daily_meals/{dateId}": {
+      "schema": "DailyMealRecord",
+      "description": "Day-by-day meal counts for all members."
+    },
+    "/messes/{messId}/bazaar_expenses/{expenseId}": {
+      "schema": "BazaarExpense",
+      "description": "Market and grocery expenses for the mess."
+    },
+    "/messes/{messId}/deposits/{depositId}": {
+      "schema": "Deposit",
+      "description": "Member deposits to central mess fund."
+    },
+    "/messes/{messId}/utility_bills/{billId}": {
+      "schema": "UtilityBill",
+      "description": "Fixed monthly utility bills shared equally."
+    }
+  }
+}
